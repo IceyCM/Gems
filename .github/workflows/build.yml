@@ -1,0 +1,22 @@
+name: Build
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Unzip
+        run: unzip -o GemsPlugin.zip
+      - name: Build
+        run: mvn -B package
+        working-directory: GemsPlugin
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Gems-plugin
+          path: GemsPlugin/target/*.jar
